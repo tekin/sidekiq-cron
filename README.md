@@ -81,6 +81,21 @@ like this `'0 22 * * 1-5 America/Chicago'`.
 
 See [rufus-scheduler documentation](https://github.com/jmettraux/rufus-scheduler#a-note-about-timezones) for more information. (note. Rufus scheduler is using Fugit under the hood, so documentation for Rufus Scheduler can help you also)
 
+
+#### Second-precision cronlines
+
+In addition to the standard 5-parameter cronline format, sidekiq-cron supports scheduling jobs with second-precision using a modified 6-parameter cronline format:
+
+`Seconds Minutes Hours Days Months DayOfWeek`
+
+For example: `"*/30 * * * * *"` would schedule a job to run every 30 seconds.
+
+Note that if you plan to schedule jobs with sub-minute precision you will also want to adjust the default poll interval so it is lower than the interval of your jobs:
+
+```
+Sidekiq.options[:poll_interval] = 10
+```
+
 ### What objects/classes can be scheduled
 #### Sidekiq Worker
 In this example, we are using `HardWorker` which looks like:
